@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edge-Based Underwater Enhancement & Detection</title>
+    <link rel="icon" type="image/png" href="/favicon.ico">
+    <link rel="stylesheet" href="/web/css/dashboard.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="brand-group">
+                <img src="/web/img/logo.png" alt="Underwater Sensor Buoy Logo" class="brand-logo">
+                <div class="brand-titles">
+                    <h1 class="brand-heading">Edge-Based Underwater <i>Enhancement & Detection</i></h1>
+                </div>
+            </div>
+
+            <div class="header-status">
+                <div class="status-indicator">
+                    <span class="live-pulse"></span>
+                    <span class="status-label">LIVE EDGE STREAM</span>
+                </div>
+            </div>
+        </header>
+        <main class="main-layout" id="main-layout">
+            <section class="viewport-card">
+                <div class="video-frame">
+                    <img id="live-stream" src="/video_feed" alt="Real-time Underwater Edge Feed">
+                </div>
+                <div class="stream-telemetry-bar">
+                    <div class="telemetry-pill">
+                        <span class="telemetry-tag">FRAME RATE</span>
+                        <div class="telemetry-digit">
+                            <span id="live-fps">--</span>
+                            <span class="telemetry-unit">FPS</span>
+                        </div>
+                    </div>
+
+                    <div class="telemetry-divider"></div>
+
+                    <div class="telemetry-pill">
+                        <span class="telemetry-tag">OPTICAL RESTORATION</span>
+                        <div class="telemetry-digit">
+                            <span id="live-enh">--</span>
+                            <span class="telemetry-unit">ms</span>
+                        </div>
+                    </div>
+
+                    <div class="telemetry-divider"></div>
+
+                    <div class="telemetry-pill">
+                        <span class="telemetry-tag">YOLOv8 DETECTION</span>
+                        <div class="telemetry-digit">
+                            <span id="live-yolo">--</span>
+                            <span class="telemetry-unit">ms</span>
+                        </div>
+                    </div>
+
+                    <div class="telemetry-actions">
+                        <button id="btn-theater" class="theater-toggle-btn" title="Toggle Expanded Canvas">
+                            <span class="theater-icon">⤢</span>
+                            <span class="theater-text">Expand Canvas</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+            <aside class="sidebar-layout">
+                <section class="panel-card">
+                    <div class="panel-header">
+                        <span class="section-tag">REAL-TIME CENSUS</span>
+                        <h2 class="panel-title">Detected <i>Entities</i></h2>
+                    </div>
+
+                    <div class="census-grid">
+                        <div class="census-tile tile-trash">
+                            <div class="tile-header">
+                                <span class="tile-category">MARINE DEBRIS</span>
+                                <span class="tile-dot"></span>
+                            </div>
+                            <div class="tile-body">
+                                <span id="count-trash" class="tile-count">0</span>
+                                <span class="tile-sub">Objects Flagged</span>
+                            </div>
+                        </div>
+                        <div class="census-tile tile-bio">
+                            <div class="tile-header">
+                                <span class="tile-category">MARINE LIFE</span>
+                                <span class="tile-dot"></span>
+                            </div>
+                            <div class="tile-body">
+                                <span id="count-bio" class="tile-count">0</span>
+                                <span class="tile-sub">Fauna & Flora</span>
+                            </div>
+                        </div>
+                        <div class="census-tile tile-gear">
+                            <div class="tile-header">
+                                <span class="tile-category">SUBMERSIBLE GEAR</span>
+                                <span class="tile-dot"></span>
+                            </div>
+                            <div class="tile-body">
+                                <span id="count-gear" class="tile-count">0</span>
+                                <span class="tile-sub">Tether / ROV Claws</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="panel-card">
+                    <div class="panel-header">
+                        <span class="section-tag">PIPELINE MODES</span>
+                        <h2 class="panel-title">Display <i>Filters</i></h2>
+                    </div>
+
+                    <div class="switch-list">
+                        <div class="switch-row">
+                            <div class="switch-info">
+                                <span class="switch-title">Split Presentation</span>
+                                <span class="switch-desc">Compare raw intake vs enhanced feed</span>
+                            </div>
+                            <label class="clean-switch">
+                                <input type="checkbox" id="toggle-sbs" checked>
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                        <div class="switch-row" id="orientation-row">
+                            <div class="switch-info">
+                                <span class="switch-title">Split Format</span>
+                                <span class="switch-desc">Wide side-by-side vs tall stacked</span>
+                            </div>
+                            <div class="segmented-control">
+                                <button type="button" class="seg-btn active" id="btn-orient-h">Wide</button>
+                                <button type="button" class="seg-btn" id="btn-orient-v">Stacked</button>
+                            </div>
+                        </div>
+
+                        <div class="switch-row">
+                            <div class="switch-info">
+                                <span class="switch-title">Optical Restoration</span>
+                                <span class="switch-desc">Red-light recovery & turbidity equalization</span>
+                            </div>
+                            <label class="clean-switch">
+                                <input type="checkbox" id="toggle-enh" checked>
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+                <section class="panel-card">
+                    <div class="panel-header">
+                        <span class="section-tag">CALIBRATION</span>
+                        <h2 class="panel-title">Tuning <i>Parameters</i></h2>
+                    </div>
+
+                    <div class="sliders-list">
+                        <div class="slider-item">
+                            <div class="slider-label-row">
+                                <span class="slider-name">Detection Confidence</span>
+                                <span id="conf-val" class="slider-badge">0.20</span>
+                            </div>
+                            <input type="range" id="conf-slider" min="0.05" max="0.80" step="0.05" value="0.20" class="editorial-slider">
+                        </div>
+                        <div class="slider-item">
+                            <div class="slider-label-row">
+                                <span class="slider-name">Red Attenuation Gain</span>
+                                <span id="red-val" class="slider-badge">1.25x</span>
+                            </div>
+                            <input type="range" id="red-slider" min="0.8" max="2.5" step="0.05" value="1.25" class="editorial-slider">
+                        </div>
+                        <div class="slider-item">
+                            <div class="slider-label-row">
+                                <span class="slider-name">Contrast Clip Limit</span>
+                                <span id="clahe-val" class="slider-badge">2.0</span>
+                            </div>
+                            <input type="range" id="clahe-slider" min="1.0" max="4.0" step="0.2" value="2.0" class="editorial-slider">
+                        </div>
+                    </div>
+                </section>
+            </aside>
+        </main>
+    </div>
+
+    <script src="/web/js/dashboard.js"></script>
+</body>
+</html>

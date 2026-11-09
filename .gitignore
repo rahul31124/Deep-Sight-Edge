@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.colab_env/
+*.log
+
+# Rust compiled artifacts
+rust_core/target/
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
