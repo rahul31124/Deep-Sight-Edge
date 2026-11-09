@@ -6,7 +6,7 @@ Real-Time Underwater Optical Restoration & Edge AI Detection Platform
   <img src="web/img/logo.png" width="140" alt="Deep Sight Edge Logo">
 </p>
 
-Deep Sight Edge is a high-performance edge computing pipeline designed for autonomous underwater vehicles (AUVs), remotely operated vehicles (ROVs), and marine monitoring stations. It combines a SIMD-accelerated Rust optical restoration engine with a fine-tuned YOLOv8 Nano neural network to restore degraded underwater video and detect marine debris and biological entities in real time.
+Deep Sight Edge is a real-time edge computing pipeline designed to detect underwater objects, marine debris, and aquatic life from live camera feeds and video recordings. It combines a SIMD-accelerated Rust optical restoration engine with a fine-tuned YOLOv8 Nano neural network to clean up hazy, color-distorted underwater footage and detect submerged objects with high precision in real time.
 
 ---
 
@@ -39,10 +39,13 @@ flowchart LR
 
 Real-time optical restoration, YOLOv8 object detection, and dynamic telemetry streaming:
 
-[![Deep Sight Edge Demonstration](videos/demo.gif)](https://github.com/rahul31124/Deep-Sight-Edge/blob/main/videos/screenrecording.mp4)
+<p align="center">
+  <a href="https://github.com/rahul31124/Deep-Sight-Edge/blob/main/videos/screenrecording.mp4">
+    <img src="videos/demo.gif" width="90%" alt="Deep Sight Edge Demonstration Preview">
+  </a>
+</p>
 
-Watch the full-resolution video playback on GitHub:
-https://github.com/rahul31124/Deep-Sight-Edge/blob/main/videos/screenrecording.mp4
+Full demonstration recording (MP4): [Deep-Sight-Edge/videos/screenrecording.mp4](https://github.com/rahul31124/Deep-Sight-Edge/blob/main/videos/screenrecording.mp4)
 
 ---
 
@@ -202,7 +205,7 @@ python main.py --video videos/test.mp4 --conf 0.25 --max-res 480 --port 8080
   <img src="doc/PI_5_TOP-small-800x621.jpg" width="600" alt="Raspberry Pi 5 Single Board Computer">
 </p>
 
-The Raspberry Pi 5 (Broadcom BCM2712 quad-core ARM Cortex-A76 at 2.4 GHz) serves as an onboard compute unit for marine robotics.
+The Raspberry Pi 5 (Broadcom BCM2712 quad-core ARM Cortex-A76 at 2.4 GHz) serves as a standalone edge processing unit for real-time video inference and telemetry streaming.
 
 ### 1. Files Required on the Raspberry Pi 5
 
@@ -382,7 +385,7 @@ The detection model is a specialized YOLOv8 Nano architecture fine-tuned on real
 
 - **Target Classes**:
   - `Bio` (Class 0): Marine organisms, sea life, and coral structures.
-  - `Submersible_Gear` (Class 1): ROVs, diving apparatus, anchors, and subsea cables.
+  - `Submersible_Gear` (Class 1): Submerged equipment, diving apparatus, anchors, chains, pipes, and underwater fixtures.
   - `Trash` (Class 2): Anthropogenic plastic waste, bottles, nets, metal scrap, and debris.
 - **Training Dataset**: 7,308 training images, 1,795 validation images.
 - **Augmentation Strategy**: Cosine learning rate schedule, underwater hue variations, saturation shifts simulating turbidity, and depth-dependent luminance adjustments.
@@ -394,3 +397,4 @@ The detection model is a specialized YOLOv8 Nano architecture fine-tuned on real
 ## License
 
 This project is licensed under the MIT License.
+
