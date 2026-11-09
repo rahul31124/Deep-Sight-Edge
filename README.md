@@ -39,11 +39,10 @@ flowchart LR
 
 Real-time optical restoration, YOLOv8 object detection, and dynamic telemetry streaming:
 
-<p align="center">
-  <img src="videos/demo.gif" width="90%" alt="Deep Sight Edge Real-Time Demonstration">
-</p>
+[![Deep Sight Edge Demonstration](videos/demo.gif)](https://github.com/rahul31124/Deep-Sight-Edge/blob/main/videos/screenrecording.mp4)
 
-Full-resolution 1080p recording available at: [videos/screenrecording.mp4](videos/screenrecording.mp4)
+Watch the full-resolution video playback on GitHub:
+https://github.com/rahul31124/Deep-Sight-Edge/blob/main/videos/screenrecording.mp4
 
 ---
 
@@ -395,4 +394,3 @@ The detection model is a specialized YOLOv8 Nano architecture fine-tuned on real
 ## License
 
 This project is licensed under the MIT License.
-
