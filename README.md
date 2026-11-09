@@ -281,6 +281,25 @@ Open any web browser on a laptop, tablet, or mobile phone connected to the same 
 http://<PI_IP_ADDRESS>:8000
 ```
 
+### 8. Optional: Accelerate Inference with Tencent NCNN
+
+For maximum frame rates on the Raspberry Pi 5 without external accelerator hardware, convert the PyTorch weights to Tencent NCNN format. NCNN is hand-optimized for ARM NEON SIMD assembly on ARM Cortex-A76 cores, reducing inference latency from approximately 80ms down to 25ms-35ms (yielding 28 to 40+ FPS on CPU):
+
+1. Install the NCNN export package:
+```bash
+pip install ncnn
+```
+
+2. Export the YOLOv8 model to NCNN format:
+```bash
+yolo export model=edge_model.pt format=ncnn imgsz=640
+```
+This command compiles the model into an `edge_model_ncnn_model/` directory containing the optimized `model.param` and `model.bin` binaries.
+
+3. Launch the pipeline using the compiled NCNN model:
+```bash
+python main.py --video 0 --model edge_model_ncnn_model --max-res 480 --device cpu --port 8000
+```
 ---
 
 ## REST and Streaming API Documentation
