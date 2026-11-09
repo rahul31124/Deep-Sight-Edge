@@ -40,10 +40,10 @@ flowchart LR
 Real-time optical restoration, YOLOv8 object detection, and dynamic telemetry streaming:
 
 <p align="center">
-  <video src="videos/screenrecording.mp4" controls width="85%"></video>
+  <img src="videos/demo.gif" width="90%" alt="Deep Sight Edge Real-Time Demonstration">
 </p>
 
-Direct recording link: [videos/screenrecording.mp4](videos/screenrecording.mp4)
+Full-resolution 1080p recording available at: [videos/screenrecording.mp4](videos/screenrecording.mp4)
 
 ---
 
@@ -80,7 +80,8 @@ Deep-Sight-Edge/
 |   |-- PI_5_TOP-small-800x621.jpg # Hardware documentation visual
 |-- videos/
 |   |-- test.mp4             # Sample underwater test footage
-|   |-- screenrecording.mp4  # Execution demonstration video
+|   |-- screenrecording.mp4  # Full 1080p execution recording
+|   |-- demo.gif             # Inline demonstration animated preview
 |-- tools/
 |   |-- benchmark_pipeline.py# Throughput and latency profiling tool
 |   |-- export_video.py      # Batch video enhancement & inference exporter
@@ -394,3 +395,4 @@ The detection model is a specialized YOLOv8 Nano architecture fine-tuned on real
 ## License
 
 This project is licensed under the MIT License.
+
