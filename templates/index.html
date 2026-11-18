@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edge-Based Underwater Enhancement & Detection</title>
     <link rel="icon" type="image/png" href="/favicon.ico">
-    <link rel="stylesheet" href="/web/css/dashboard.css">
+    <link rel="stylesheet" href="/web/css/dashboard.css?v=2.3">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,7 +28,8 @@
                 </div>
             </div>
         </header>
-        <main class="main-layout" id="main-layout">
+
+        <main class="main-layout theater-mode" id="main-layout">
             <section class="viewport-card">
                 <div class="video-frame">
                     <img id="live-stream" src="/video_feed" alt="Real-time Underwater Edge Feed">
@@ -55,7 +56,7 @@
                     <div class="telemetry-divider"></div>
 
                     <div class="telemetry-pill">
-                        <span class="telemetry-tag">YOLOv8 DETECTION</span>
+                        <span class="telemetry-tag" id="detection-tag">YOLO INFERENCE</span>
                         <div class="telemetry-digit">
                             <span id="live-yolo">--</span>
                             <span class="telemetry-unit">ms</span>
@@ -63,13 +64,14 @@
                     </div>
 
                     <div class="telemetry-actions">
-                        <button id="btn-theater" class="theater-toggle-btn" title="Toggle Expanded Canvas">
+                        <button id="btn-theater" class="theater-toggle-btn active" title="Toggle Standard/Sidebar View">
                             <span class="theater-icon">⤢</span>
-                            <span class="theater-text">Expand Canvas</span>
+                            <span class="theater-text">Compact View</span>
                         </button>
                     </div>
                 </div>
             </section>
+
             <aside class="sidebar-layout">
                 <section class="panel-card">
                     <div class="panel-header">
@@ -105,18 +107,61 @@
                             </div>
                             <div class="tile-body">
                                 <span id="count-gear" class="tile-count">0</span>
-                                <span class="tile-sub">Tether / ROV Claws</span>
+                                <span class="tile-sub">Tether / Hardware / Gear</span>
                             </div>
                         </div>
                     </div>
                 </section>
+
+                <section class="panel-card">
+                    <div class="panel-header">
+                        <span class="section-tag">FEED SOURCE</span>
+                        <h2 class="panel-title">Video <i>Input</i></h2>
+                    </div>
+
+                    <div class="source-group">
+                        <div class="source-status-badge">
+                            Active Source: <b id="current-source-label">--</b>
+                        </div>
+
+                        <div class="source-actions-row">
+                            <select id="video-select" class="editorial-select">
+                                <option value="">Loading videos...</option>
+                            </select>
+                            <button type="button" id="btn-load-video" class="btn-editorial-sm">Load</button>
+                        </div>
+
+                        <button type="button" id="btn-switch-camera" class="btn-camera-switch">
+                            Switch to Live Camera (/dev/video0)
+                        </button>
+
+                        <input type="file" id="video-file-input" accept="video/mp4,video/avi,video/mov,video/mkv" style="display:none">
+                        <div class="upload-drop-area" id="upload-drop-zone">
+                            <span class="upload-title">Upload Video Clip</span>
+                            <span class="upload-subtitle">Drag and drop MP4 or click to select</span>
+                        </div>
+                        <div id="upload-status" class="upload-status-text"></div>
+                    </div>
+                </section>
+
                 <section class="panel-card">
                     <div class="panel-header">
                         <span class="section-tag">PIPELINE MODES</span>
-                        <h2 class="panel-title">Display <i>Filters</i></h2>
+                        <h2 class="panel-title">Display & <i>Models</i></h2>
                     </div>
 
                     <div class="switch-list">
+                        <div class="switch-row" id="model-select-row">
+                            <div class="switch-info">
+                                <span class="switch-title">Active AI Model</span>
+                                <span class="switch-desc">YOLOv8 Nano vs YOLO26 Nano</span>
+                            </div>
+                            <div class="segmented-control">
+                                <button type="button" class="seg-btn active" id="btn-model-yolo8">YOLOv8 Nano</button>
+                                <button type="button" class="seg-btn" id="btn-model-yolo26">YOLO26 Nano</button>
+                            </div>
+                        </div>
+
                         <div class="switch-row">
                             <div class="switch-info">
                                 <span class="switch-title">Split Presentation</span>
@@ -150,6 +195,7 @@
                         </div>
                     </div>
                 </section>
+
                 <section class="panel-card">
                     <div class="panel-header">
                         <span class="section-tag">CALIBRATION</span>
@@ -160,9 +206,9 @@
                         <div class="slider-item">
                             <div class="slider-label-row">
                                 <span class="slider-name">Detection Confidence</span>
-                                <span id="conf-val" class="slider-badge">0.20</span>
+                                <span id="conf-val" class="slider-badge">0.25</span>
                             </div>
-                            <input type="range" id="conf-slider" min="0.05" max="0.80" step="0.05" value="0.20" class="editorial-slider">
+                            <input type="range" id="conf-slider" min="0.05" max="0.80" step="0.05" value="0.25" class="editorial-slider">
                         </div>
                         <div class="slider-item">
                             <div class="slider-label-row">
@@ -180,10 +226,49 @@
                         </div>
                     </div>
                 </section>
+
+                <section class="panel-card">
+                    <div class="panel-header">
+                        <span class="section-tag">EDGE HARDWARE</span>
+                        <h2 class="panel-title">Raspberry Pi 5 <i>CLI</i></h2>
+                    </div>
+
+                    <div class="pi-helper-group">
+                        <div class="pi-config-grid">
+                            <div class="pi-config-item">
+                                <span class="pi-config-label">Camera Node</span>
+                                <select id="pi-camera-input" class="editorial-select">
+                                    <option value="/dev/video0" selected>/dev/video0</option>
+                                    <option value="0">0 (Index)</option>
+                                    <option value="/dev/video2">/dev/video2</option>
+                                    <option value="videos/test.mp4">videos/test.mp4</option>
+                                </select>
+                            </div>
+                            <div class="pi-config-item">
+                                <span class="pi-config-label">Model Weights</span>
+                                <select id="pi-model-input" class="editorial-select">
+                                    <option value="yolo26n.pt" selected>yolo26n.pt</option>
+                                    <option value="edge_model.pt">edge_model.pt</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="terminal-box">
+                            <code class="terminal-code" id="pi-cmd-display">python3 main.py --video /dev/video0 --model yolo26n.pt --port 8000</code>
+                            <button type="button" class="btn-copy-code" id="btn-copy-pi-cmd">Copy</button>
+                        </div>
+
+                        <div class="pi-quick-notes">
+                            <span>• Check cameras on Pi: <code>v4l2-ctl --list-devices</code></span>
+                            <span>• Run headless or on boot: <code>python3 main.py &amp;</code></span>
+                            <span>• Remote browser access: <code>http://&lt;PI_IP&gt;:8000</code></span>
+                        </div>
+                    </div>
+                </section>
             </aside>
         </main>
     </div>
 
-    <script src="/web/js/dashboard.js"></script>
+    <script src="/web/js/dashboard.js?v=2.3"></script>
 </body>
 </html>

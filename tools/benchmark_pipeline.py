@@ -49,7 +49,7 @@ def run_benchmark(video_path: str, model_path: str, num_frames: int = 150, devic
     elif device.isdigit():
         device = f"cuda:{device}"
 
-    actual_model = model_path if os.path.exists(model_path) else "edge_model.pt"
+    actual_model = model_path if (model_path and os.path.exists(model_path)) else ("yolo26n.pt" if os.path.exists("yolo26n.pt") else "edge_model.pt")
 
     logger.info("=" * 65)
     logger.info("UNDERWATER PIPELINE QUANTITATIVE BENCHMARK")
@@ -131,7 +131,7 @@ def run_benchmark(video_path: str, model_path: str, num_frames: int = 150, devic
     logger.info("-" * 65)
     logger.info(f"{'1. Video Ingest & Decode':<30} | {m_dec:8.2f}ms | {med_dec:6.2f}ms | {p95_dec:6.2f}ms | {(m_dec/m_tot)*100:5.1f}%")
     logger.info(f"{'2. Optical Restoration (Rust)':<30} | {m_enh:8.2f}ms | {med_enh:6.2f}ms | {p95_enh:6.2f}ms | {(m_enh/m_tot)*100:5.1f}%")
-    logger.info(f"{'3. YOLOv8 Detection & Draw':<30} | {m_yolo:8.2f}ms | {med_yolo:6.2f}ms | {p95_yolo:6.2f}ms | {(m_yolo/m_tot)*100:5.1f}%")
+    logger.info(f"{f'3. {detector.model_display_name} Inference':<30} | {m_yolo:8.2f}ms | {med_yolo:6.2f}ms | {p95_yolo:6.2f}ms | {(m_yolo/m_tot)*100:5.1f}%")
     logger.info("-" * 65)
     logger.info(f"{'FULL PIPELINE LATENCY':<30} | {m_tot:8.2f}ms | {med_tot:6.2f}ms | {p95_tot:6.2f}ms | 100.0%")
     logger.info("=" * 65)

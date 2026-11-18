@@ -92,7 +92,8 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Export Underwater Video with AI Detections")
     parser.add_argument("--input", type=str, default="test.mp4", help="Input video path")
     parser.add_argument("--output", type=str, default="underwater_rendered_demo.mp4", help="Output video path")
-    parser.add_argument("--model", type=str, default="edge_model.pt", help="YOLO weights path")
+    default_model = "yolo26n.pt" if os.path.exists("yolo26n.pt") else "edge_model.pt"
+    parser.add_argument("--model", type=str, default=default_model, help="YOLO weights path (default: yolo26n.pt or edge_model.pt)")
     parser.add_argument("--conf", type=float, default=0.20, help="Confidence threshold")
     parser.add_argument("--single", action="store_true", help="Export single enhanced view instead of side-by-side")
     parser.add_argument("--device", type=str, default=None, help="Device ('0', 'cpu', or auto-detect)")
